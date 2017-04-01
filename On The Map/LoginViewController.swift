@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
     
     @IBOutlet var loginButton: UIButton!
     
+    
     var session: URLSession!
     
     // MARK: Life Cycle
@@ -88,6 +89,13 @@ class LoginViewController: UIViewController {
         }
     }
 
+    @IBAction func newUserSignUp(_ sender: Any) {
+        let app = UIApplication.shared
+        let toOpen = "https://auth.udacity.com/sign-up?next=https%3A%2F%2Fclassroom.udacity.com%2Fauthenticated"
+        if let url = URL(string: toOpen) {
+            app.open(url, options: [:], completionHandler: nil)
+        }
+    }
     
     func configureBackground() {
         let backgroundGradient = CAGradientLayer()
@@ -97,6 +105,15 @@ class LoginViewController: UIViewController {
         backgroundGradient.locations = [0.0, 1.0]
         backgroundGradient.frame = view.frame
         view.layer.insertSublayer(backgroundGradient, at: 0)
+    }
+    
+    // MARK: Shared Instance
+    
+    class func sharedInstance() -> LoginViewController {
+        struct Singleton {
+            static var sharedInstance = LoginViewController()
+        }
+        return Singleton.sharedInstance
     }
     
 

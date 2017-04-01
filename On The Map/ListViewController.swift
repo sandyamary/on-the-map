@@ -21,12 +21,6 @@ class ListViewController: UIViewController {
     
     // MARK: Life Cycle
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // create and set the logout button
-        parent!.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(logout))
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.locationsTableView.delegate = self
@@ -44,12 +38,7 @@ class ListViewController: UIViewController {
             
         }
     }
-    
-    // MARK: Logout
-    
-    func logout() {
-        dismiss(animated: true, completion: nil)
-    }
+
 }
 
 // MARK: - FavoritesViewController: UITableViewDelegate, UITableViewDataSource

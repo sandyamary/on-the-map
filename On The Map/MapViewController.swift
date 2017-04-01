@@ -17,6 +17,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        parent!.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPin))
+        
+        parent!.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(logout))
+        
         mapView.delegate = self
         
         ParseClient.sharedInstance().getStudentLocations { (studentLocations, error) in
@@ -56,6 +61,21 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
+    // MARK: Add Location
+    
+    func addPin() {
+        let controller = storyboard!.instantiateViewController(withIdentifier: "PostLocationNavigationController") as! UINavigationController
+        present(controller, animated: true, completion: nil)
+    }
+    
+    // MARK: Logout
+    
+    func logout() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
     // MARK: - MKMapViewDelegate
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -89,6 +109,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     }
                 }
     }
+    
+    
     
 }
 

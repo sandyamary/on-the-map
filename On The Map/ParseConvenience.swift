@@ -42,7 +42,7 @@ extension ParseClient {
     
     // MARK: POST Convenience Method
     
-    func postStudentLocation(_ studentLocation: StudentLocation, uniqueKey: String, firstName: String, lastName: String, mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForStudentLocation: @escaping (_ result: String?, _ error: NSError?) -> Void) {
+    func postStudentLocation(uniqueKey: String, firstName: String, lastName: String, mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForStudentLocation: @escaping (_ result: String?, _ error: NSError?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         //none
@@ -56,8 +56,8 @@ extension ParseClient {
             if let error = error {
                 completionHandlerForStudentLocation(nil, error)
             } else {
-                if let results = results?[ParseClient.JSONResponseKeys.ObjectID] as? String {
-                    completionHandlerForStudentLocation(results, nil)
+                if let objectid = results?[ParseClient.JSONResponseKeys.ObjectID] as? String {
+                    completionHandlerForStudentLocation(objectid, nil)
                 } else {
                     completionHandlerForStudentLocation(nil, NSError(domain: "postStudentLocation parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse postStudentLocation"]))
                 }
