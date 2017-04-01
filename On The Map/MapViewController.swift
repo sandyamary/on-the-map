@@ -13,10 +13,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet var mapView: MKMapView!
     
-    var studentLocations: [[String:AnyObject]]!
+    var studentLocations: [StudentLocation]!
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mapView.delegate = self
         
         ParseClient.sharedInstance().getStudentLocations { (studentLocations, error) in
             if let locations = studentLocations {
@@ -27,15 +28,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     // Notice that the float values are being used to create CLLocationDegree values.
                     // This is a version of the Double type.
                     
-                    let lat = CLLocationDegrees(eachLocation["latitude"] as! Double)
-                    let long = CLLocationDegrees(eachLocation["longitude"] as! Double)
+                    let lat = CLLocationDegrees(eachLocation.latitude)
+                    let long = CLLocationDegrees(eachLocation.longitude)
                     
                     // The lat and long are used to create a CLLocationCoordinates2D instance.
                     let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
                     
-                    let first = eachLocation["firstName"] as! String
-                    let last = eachLocation["lastName"] as! String
-                    let mediaURL = eachLocation["mediaURL"] as! String
+                    let first = eachLocation.firstName
+                    let last = eachLocation.lastName
+                    let mediaURL = eachLocation.mediaURL
                     
                     // Here we create the annotation and set its coordiate, title, and subtitle properties
                     let annotation = MKPointAnnotation()
@@ -75,19 +76,19 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         return pinView
     }
-    
-    
-    // This delegate method is implemented to respond to taps. It opens the system browser
-    // to the URL specified in the annotationViews subtitle property.
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == view.rightCalloutAccessoryView {
-            let app = UIApplication.shared
-            let url = URL(string: "http://www.google.com")!
-            if let toOpen = view.annotation?.subtitle! {
-                app.open(url, options: [:], completionHandler: nil)
-            }
-        }
-    }
 
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+                if control == view.rightCalloutAccessoryView {
+                    let app = UIApplication.shared
+                    if let toOpen = view.annotation?.subtitle!, let url = URL(string: toOpen) {
+                        print(url)
+                        app.open(url, options: [:], completionHandler: nil)
+                    } else {
+                        print("not a link")
+                    }
+                }
+    }
+    
 }
 

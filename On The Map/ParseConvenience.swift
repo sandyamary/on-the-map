@@ -13,7 +13,7 @@ import Foundation
 
 extension ParseClient {
     
-    func getStudentLocations(completionHandlerForStudentLocations: @escaping (_ result: [[String:AnyObject]]?, _ error: NSError?) -> Void) {
+    func getStudentLocations(completionHandlerForStudentLocations: @escaping (_ result: [StudentLocation]?, _ error: NSError?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         //None
@@ -28,8 +28,8 @@ extension ParseClient {
                 
                 if let results = results?[ParseClient.JSONResponseKeys.Results] as? [[String:AnyObject]] {
                     
-                    //let studentLocations = StudentLocation.studentLocationsFromResults(results)
-                    completionHandlerForStudentLocations(results, nil)
+                    let studentLocations = StudentLocation.studentLocationsFromResults(results)
+                    completionHandlerForStudentLocations(studentLocations, nil)
                 } else {
                     completionHandlerForStudentLocations(nil, NSError(domain: "getStudentLocations parsing", code: 0, userInfo: [NSLocalizedDescriptionKey: "Could not parse getStudentLocations"]))
                 }

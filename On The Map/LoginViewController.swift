@@ -19,13 +19,24 @@ class LoginViewController: UIViewController {
     
     @IBOutlet var debugTextLabel: UILabel!
     
+    @IBOutlet var loginButton: UIButton!
+    
     var session: URLSession!
     
     // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        customizeButtonsLook(button: loginButton)
         configureBackground()
+    }
+    
+    func customizeButtonsLook(button: UIButton) {
+        button.backgroundColor = .clear
+        button.layer.cornerRadius = 5
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.white.cgColor
+        button.backgroundColor = UIColor.init(red: 0.023, green: 0.569, blue: 0.910, alpha: 1.0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -67,7 +78,7 @@ class LoginViewController: UIViewController {
     
     private func completeLogin() {
         debugTextLabel.text = ""
-        let controller = storyboard!.instantiateViewController(withIdentifier: "TabBarController") as! UITabBarController
+        let controller = storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
         present(controller, animated: true, completion: nil)
     }
     

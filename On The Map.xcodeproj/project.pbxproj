@@ -22,6 +22,7 @@
 		8A2572FD1E8DB9A80045E866 /* UdacityStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2572FC1E8DB9A80045E866 /* UdacityStudent.swift */; };
 		8A2572FF1E8DC1FB0045E866 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2572FE1E8DC1FB0045E866 /* LoginViewController.swift */; };
 		8A2573011E8DC3A90045E866 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2573001E8DC3A90045E866 /* GCDBlackBox.swift */; };
+		8A3D97751E8F1218003529B1 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D97741E8F1218003529B1 /* ListViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		8A2572FC1E8DB9A80045E866 /* UdacityStudent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudent.swift; sourceTree = "<group>"; };
 		8A2572FE1E8DC1FB0045E866 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8A2573001E8DC3A90045E866 /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
+		8A3D97741E8F1218003529B1 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 			children = (
 				8A2572FE1E8DC1FB0045E866 /* LoginViewController.swift */,
 				8A2572D31E8ACF220045E866 /* MapViewController.swift */,
+				8A3D97741E8F1218003529B1 /* ListViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				8A2572D41E8ACF220045E866 /* MapViewController.swift in Sources */,
 				8A2572EF1E8CD1FA0045E866 /* ParseConstants.swift in Sources */,
 				8A2572D21E8ACF220045E866 /* AppDelegate.swift in Sources */,
+				8A3D97751E8F1218003529B1 /* ListViewController.swift in Sources */,
 				8A2572FF1E8DC1FB0045E866 /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,6 +400,7 @@
 				8A2572E21E8ACF220045E866 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
