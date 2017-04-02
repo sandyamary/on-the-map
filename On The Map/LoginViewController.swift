@@ -62,10 +62,11 @@ class LoginViewController: UIViewController {
     
     func authenticateWithViewController(_ hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
-        UdacityClient.sharedInstance().postSession(username: "sandyamary.u@gmail.com", password: "soccerage") { (success, sessionID, errorString) in
+        UdacityClient.sharedInstance().postSession(username: "sandyamary.u@gmail.com", password: "soccerage") { (success, sessionID, key, errorString) in
             if success {
                 if let sessionId = sessionID {
                     UdacityClient.sharedInstance().sessionID = sessionId
+                    UdacityClient.sharedInstance().uniqueKey = key
                 }
                 completionHandlerForAuth(success, errorString)
             } else {

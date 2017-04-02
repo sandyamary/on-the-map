@@ -83,11 +83,12 @@ class ParseClient : NSObject {
         /* 2/3. Build the URL, Configure the request */
         let request = NSMutableURLRequest(url: parseURLFromParameters(parameters, withPathExtension: method))
         request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue(Constants.ApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.httpBody = jsonBody.data(using: String.Encoding.utf8)
+        
+        print("REQUEST :\(request)")
         
         /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in

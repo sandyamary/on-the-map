@@ -14,7 +14,7 @@ import Foundation
 extension UdacityClient {
     
     
-    func postSession(username: String, password: String, completionHandlerForSession: @escaping (_ success: Bool, _ sessionID: String?, _ errorString: String?) -> Void) {
+    func postSession(username: String, password: String, completionHandlerForSession: @escaping (_ success: Bool, _ sessionID: String?, _ uniqueKey: String?, _ errorString: String?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         //none
@@ -27,13 +27,13 @@ extension UdacityClient {
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
                 print(error)
-                completionHandlerForSession(false, nil, "Login Failed (Request Token).")
+                completionHandlerForSession(false, nil, nil, "Login Failed (Request Token).")
             } else {
-                if let session = results?[UdacityClient.JSONResponseKeys.Session] as? [String: AnyObject], let sessionid = session[UdacityClient.JSONResponseKeys.Id] as? String {
-                    completionHandlerForSession(true, sessionid, nil)
+                if let session = results?[UdacityClient.JSONResponseKeys.Session] as? [String: AnyObject], let sessionid = session[UdacityClient.JSONResponseKeys.Id] as? String, let account = results?[UdacityClient.JSONResponseKeys.Account] as? [String: AnyObject], let uniquekey = account[UdacityClient.JSONResponseKeys.Key] as? String {
+                    completionHandlerForSession(true, sessionid, uniquekey, nil)
                 } else {
                     print("Could not find \(UdacityClient.JSONResponseKeys.Session) in \(results)")
-                    completionHandlerForSession(false, nil, "Login Failed (due to Request Token).")
+                    completionHandlerForSession(false, nil, nil, "Login Failed (due to Request Token).")
                 }
             }
         }
@@ -46,7 +46,7 @@ extension UdacityClient {
         //none
         
         /* 2. Make the request */
-        let _ = taskForDeleteMethod(Methods.Session, parameters: [String:AnyObject]()) { (results, error) in
+        let _ = taskForDeleteMethod(Methods.Session) { (results, error) in
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
@@ -65,16 +65,16 @@ extension UdacityClient {
         }
     }
     
-    func getUserData(username: String, password: String, completionHandlerForUserData: @escaping (_ result: UdacityStudent?, _ error: NSError?) -> Void) {
+    func getUserData(completionHandlerForUserData: @escaping (_ result: UdacityStudent?, _ error: NSError?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         //none
         
         var mutableMethod: String = Methods.UserData
-        mutableMethod = ParseClient.sharedInstance().substituteKeyInMethod(mutableMethod, key: UdacityClient.URLKeys.UserID, value: String(UdacityClient.sharedInstance().userID!))!
+        mutableMethod = ParseClient.sharedInstance().substituteKeyInMethod(mutableMethod, key: UdacityClient.URLKeys.UserID, value: String(UdacityClient.sharedInstance().uniqueKey!))!
         
         /* 2. Make the request */
-        let _ = taskForUdacityGETMethod(mutableMethod, parameters: [String:AnyObject]()) { (results, error) in
+        let _ = taskForUdacityGETMethod(mutableMethod) { (results, error) in
             
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {

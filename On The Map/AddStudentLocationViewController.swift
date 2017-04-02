@@ -21,16 +21,19 @@ class AddStudentLocationViewController: UIViewController {
         enterLocationTextView.text = "Enter Your Location Here"
         enterLocationTextView.textColor = UIColor.lightGray
         enterLocationTextView.isEditable = true
+        enterLocationTextView.backgroundColor = UIColor.init(red: 0.023, green: 0.569, blue: 0.910, alpha: 1.0)
         LoginViewController.sharedInstance().customizeButtonsLook(button: findOnMapButton)
         
     }
     
     @IBAction func findOnMap(_ sender: UIButton) {
-        let controller = storyboard!.instantiateViewController(withIdentifier: "GeoNavigationController") as! UINavigationController
+        let storyboard = UIStoryboard (name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "GeoLocationViewController") as! GeoLocationViewController
+        controller.mapString = enterLocationTextView.text
         present(controller, animated: true, completion: nil)
     }
     
-    @IBAction func cancel(_ sender: Any) {
+    @IBAction func cancel(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
 

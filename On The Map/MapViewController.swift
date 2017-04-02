@@ -64,7 +64,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     // MARK: Add Location
     
     func addPin() {
-        let controller = storyboard!.instantiateViewController(withIdentifier: "PostLocationNavigationController") as! UINavigationController
+        let controller = storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController")
         present(controller, animated: true, completion: nil)
     }
     

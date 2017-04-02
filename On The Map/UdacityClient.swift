@@ -14,6 +14,7 @@ class UdacityClient : NSObject {
     
     // MARK: Properties
     var sessionID: String? = nil
+    var uniqueKey: String? = nil
     var userID: String? = nil
     
     // shared session
@@ -77,13 +78,13 @@ class UdacityClient : NSObject {
     
     // MARK: GET
     
-    func taskForUdacityGETMethod(_ method: String, parameters: [String:AnyObject], completionHandlerForUdacityGET: @escaping (_ result: [String: AnyObject]?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForUdacityGETMethod(_ method: String, completionHandlerForUdacityGET: @escaping (_ result: [String: AnyObject]?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         /* 1. Set the common parameters */
         //None
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: ParseClient.sharedInstance().parseURLFromParameters(parameters, withPathExtension: method))
+        let request = NSMutableURLRequest(url: self.buildURLFromParameters(withPathExtension: method))
         
         /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
@@ -126,12 +127,12 @@ class UdacityClient : NSObject {
     
     
     
-    func taskForDeleteMethod(_ method: String, parameters: [String:AnyObject], completionHandlerForDELETE: @escaping (_ result: [String: AnyObject]?, _ error: NSError?) -> Void) -> URLSessionDataTask {
+    func taskForDeleteMethod(_ method: String, completionHandlerForDELETE: @escaping (_ result: [String: AnyObject]?, _ error: NSError?) -> Void) -> URLSessionDataTask {
         
         /* 1. Set the parameters */
         
         /* 2/3. Build the URL, Configure the request */
-        let request = NSMutableURLRequest(url: ParseClient.sharedInstance().parseURLFromParameters(parameters, withPathExtension: method))
+        let request = NSMutableURLRequest(url: self.buildURLFromParameters(withPathExtension: method))
         request.httpMethod = "DELETE"
         var xsrfCookie: HTTPCookie? = nil
         let sharedCookieStorage = HTTPCookieStorage.shared
