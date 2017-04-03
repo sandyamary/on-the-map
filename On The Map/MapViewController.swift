@@ -53,7 +53,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                     annotations.append(annotation)
                 }
                 
-                self.mapView.addAnnotations(annotations)
+                performUIUpdatesOnMain {
+                    self.mapView.addAnnotations(annotations)
+                }
 
             } else {
                 print(error!)

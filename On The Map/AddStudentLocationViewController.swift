@@ -15,14 +15,18 @@ class AddStudentLocationViewController: UIViewController {
     @IBOutlet var enterLocationTextView: UITextView!
     @IBOutlet var findOnMapButton: UIButton!
     
+    @IBOutlet var emptyLocationErrorLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        findOnMapButton.isUserInteractionEnabled = false
+        findOnMapButton.backgroundColor = UIColor.lightGray
+        emptyLocationErrorLabel.isHidden = true
         enterLocationTextView.delegate = self
         enterLocationTextView.text = "Enter Your Location Here"
         enterLocationTextView.textColor = UIColor.lightGray
         enterLocationTextView.isEditable = true
         enterLocationTextView.backgroundColor = UIColor.init(red: 0.023, green: 0.569, blue: 0.910, alpha: 1.0)
-        LoginViewController.sharedInstance().customizeButtonsLook(button: findOnMapButton)
         
     }
     
@@ -33,37 +37,18 @@ class AddStudentLocationViewController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
+    
     @IBAction func cancel(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
 
 }
 
-    
-    
-
-    
-    
-    
-    
-
-//func addPin() {
-//    ParseClient.sharedInstance().postStudentLocation(uniqueKey: "", firstName: <#T##String#>, lastName: <#T##String#>, mapString: <#T##String#>, mediaURL: <#T##String#>, latitude: <#T##Double#>, longitude: <#T##Double#>) { (objectID, error) in
-//        if success {
-//            if let sessionId = sessionID {
-//                UdacityClient.sharedInstance().sessionID = sessionId
-//            }
-//            completionHandlerForAuth(success, errorString)
-//        } else {
-//            completionHandlerForAuth(success, errorString)
-//        }
-//    }
-//}
-
 
 
 extension AddStudentLocationViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
+        findOnMapButton.isUserInteractionEnabled = true
         if textView.text == "Enter Your Location Here" {
             textView.text = ""
             textView.textColor = UIColor.white
@@ -71,4 +56,24 @@ extension AddStudentLocationViewController: UITextViewDelegate {
             textView.isEditable = true
         }
     }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
+            emptyLocationErrorLabel.isHidden = false
+            findOnMapButton.isUserInteractionEnabled = false
+        } else {
+            emptyLocationErrorLabel.isHidden = true
+            LoginViewController.sharedInstance().customizeButtonsLook(button: findOnMapButton)
+            findOnMapButton.isUserInteractionEnabled = true
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+
 }
