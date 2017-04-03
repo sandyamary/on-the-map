@@ -70,23 +70,6 @@ class GeoLocationViewController: UIViewController {
     
     @IBAction func submitStudentLocation(_ sender: UIButton) {
         
-        getStudentInformation()
-        
-        //pass the information to parse api to post student location (uniquekey, fname, lname, mapstring, mediaurl, lat, lon
-        ParseClient.sharedInstance().postStudentLocation(uniqueKey: self.studentUniqueKey, firstName: self.studentFirstname, lastName: self.studentLastname, mapString: self.mapString, mediaURL: self.enterUrlTextView.text, latitude: self.latitude, longitude: self.longitude) { (objectID, error) in
-            
-            if let _ = objectID {
-                performUIUpdatesOnMain {
-                    print("SUCCESS")
-                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
-                    self.present(controller, animated: true, completion: nil)
-                }
-            }
-        }
-    }
-    
-    func getStudentInformation() {
-        
         //get unique key from the Udacity post session
         studentUniqueKey = UdacityClient.sharedInstance().uniqueKey
         
@@ -96,8 +79,17 @@ class GeoLocationViewController: UIViewController {
             if let udacityStudentData = udacityStudentData {
                 self.studentFirstname = udacityStudentData.firstName
                 self.studentLastname = udacityStudentData.lastName
+
+                ParseClient.sharedInstance().postStudentLocation(uniqueKey: self.studentUniqueKey, firstName: self.studentFirstname, lastName: self.studentLastname, mapString: self.mapString, mediaURL: self.enterUrlTextView.text, latitude: self.latitude, longitude: self.longitude) { (objectID, error) in
+                    
+                    if let _ = objectID {
+                        performUIUpdatesOnMain {
+                            let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
+                            self.present(controller, animated: true, completion: nil)
+                        }
+                    }
+                }
             }
-            
         }
     }
     

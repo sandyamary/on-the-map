@@ -88,8 +88,6 @@ class ParseClient : NSObject {
         request.addValue(Constants.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
         request.httpBody = jsonBody.data(using: String.Encoding.utf8)
         
-        print("REQUEST :\(request)")
-        
         /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in
             

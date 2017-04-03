@@ -49,8 +49,6 @@ extension ParseClient {
 
         let jsonBody = "{\"\(ParseClient.JSONBodyKeys.UniqueKey)\": \"\(uniqueKey)\",\"\(ParseClient.JSONBodyKeys.FirstName)\": \"\(firstName)\",\"\(ParseClient.JSONBodyKeys.LastName)\": \"\(lastName)\", \"\(ParseClient.JSONBodyKeys.MapString)\": \"\(mapString)\", \"\(ParseClient.JSONBodyKeys.MediaURL)\": \"\(mediaURL)\", \"\(ParseClient.JSONBodyKeys.Longitude)\": \(longitude), \"\(ParseClient.JSONBodyKeys.Latitude)\": \(latitude)}"
         
-        print("JSON BODY :\(jsonBody)")
-        
         /* 2. Make the request */
         let _ = taskForPOSTMethod(Methods.StudentLocations, parameters: [String:AnyObject](), jsonBody: jsonBody) { (results, error) in
             
