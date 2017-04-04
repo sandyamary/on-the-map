@@ -9,20 +9,32 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController, MKMapViewDelegate {
+class MapViewController: UIViewController {
+    
+    // MARK: Outlets
     
     @IBOutlet var mapView: MKMapView!
     
+    
+    // MARK: Properties
+    
     var studentLocations: [StudentLocation]!
+    var loggedUserObjectID: String!
+    
+    
+    // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        parent!.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "MarkerIcon")!, style: .plain, target: self, action: #selector(addLocation))
         
-        parent!.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addPin))
-        
-        parent!.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(logout))
+        parent!.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout))
         
         mapView.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         ParseClient.sharedInstance().getStudentLocations { (studentLocations, error) in
             if let locations = studentLocations {
@@ -30,56 +42,106 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 var annotations = [MKPointAnnotation]()
                 for eachLocation in self.studentLocations {
                     
-                    // Notice that the float values are being used to create CLLocationDegree values.
-                    // This is a version of the Double type.
+                    if UdacityClient.sharedInstance().uniqueKey == eachLocation.studentUniqueKey {
+                        ParseClient.sharedInstance().objectID = eachLocation.objectID
+                    }
                     
                     let lat = CLLocationDegrees(eachLocation.latitude)
                     let long = CLLocationDegrees(eachLocation.longitude)
                     
-                    // The lat and long are used to create a CLLocationCoordinates2D instance.
                     let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
                     
                     let first = eachLocation.firstName
                     let last = eachLocation.lastName
                     let mediaURL = eachLocation.mediaURL
                     
-                    // Here we create the annotation and set its coordiate, title, and subtitle properties
                     let annotation = MKPointAnnotation()
                     annotation.coordinate = coordinate
                     annotation.title = "\(first) \(last)"
                     annotation.subtitle = mediaURL
                     
-                    // Finally we place the annotation in an array of annotations.
                     annotations.append(annotation)
                 }
                 
                 performUIUpdatesOnMain {
                     self.mapView.addAnnotations(annotations)
                 }
-
+                
             } else {
                 print(error!)
             }
         }
     }
     
+    
+    
     // MARK: Add Location
     
-    func addPin() {
-        let controller = storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController")
-        present(controller, animated: true, completion: nil)
+    func addLocation() {
+        
+        if doesLocationExist() {
+            
+            let alertController = UIAlertController(title: "Alert", message: "You have already posted a student location. Would you like to overwrite it?", preferredStyle: UIAlertControllerStyle.alert)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
+            
+            let overwriteAction = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default)
+            {
+                (result : UIAlertAction) -> Void in
+                //set a flag to update location instead of posting new one
+                let controller = self.storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController") as! AddStudentLocationViewController
+                controller.updateLocation = true
+                self.present(controller, animated: true, completion: nil)
+                
+            }
+            alertController.addAction(overwriteAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true, completion: nil)
+            
+        } else {
+            
+            let controller = self.storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController") as! AddStudentLocationViewController
+            controller.updateLocation = false
+            self.present(controller, animated: true, completion: nil)
+        }
+        
     }
+    
+    func doesLocationExist() -> Bool {
+        for eachStudentLocation in studentLocations {
+            if UdacityClient.sharedInstance().uniqueKey == eachStudentLocation.studentUniqueKey {
+                return true
+            }
+        }
+        return false
+    }
+    
+    
     
     // MARK: Logout
     
     func logout() {
-        dismiss(animated: true, completion: nil)
+        UdacityClient.sharedInstance().deleteSession { (success, errorMessage) in
+            if success {
+                performUIUpdatesOnMain {
+                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                    self.present(controller, animated: true, completion: nil)
+                }
+            } else {
+                print(errorMessage ?? "Session could not be Deleted")
+                performUIUpdatesOnMain {
+                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                    self.present(controller, animated: true, completion: nil)
+                }
+            }
+        }
     }
-    
-    
+}
+
+extension MapViewController: MKMapViewDelegate {
     
     // MARK: - MKMapViewDelegate
-
+    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
@@ -98,21 +160,17 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         
         return pinView
     }
-
+    
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-                if control == view.rightCalloutAccessoryView {
-                    let app = UIApplication.shared
-                    if let toOpen = view.annotation?.subtitle!, let url = URL(string: toOpen) {
-                        print(url)
-                        app.open(url, options: [:], completionHandler: nil)
-                    } else {
-                        print("not a link")
-                    }
-                }
+        if control == view.rightCalloutAccessoryView {
+            let app = UIApplication.shared
+            if let toOpen = view.annotation?.subtitle!, let url = URL(string: toOpen) {
+                print(url)
+                app.open(url, options: [:], completionHandler: nil)
+            }
+        }
     }
-    
-    
     
 }
 

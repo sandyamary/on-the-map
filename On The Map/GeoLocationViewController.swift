@@ -12,12 +12,18 @@ import MapKit
 
 class GeoLocationViewController: UIViewController {
     
+    //MARK: Properties
+    
     var mapString: String!
     var studentUniqueKey: String!
     var latitude: Double!
     var longitude: Double!
     var studentFirstname: String!
     var studentLastname: String!
+    var updateLocation: Bool!
+    
+    
+    //MARK: Outlets
     
     @IBOutlet var enterUrlTextView: UITextView!
     
@@ -27,10 +33,8 @@ class GeoLocationViewController: UIViewController {
     
     @IBOutlet var emptyMediaURLErrorLabel: UILabel!
     
-    @IBAction func cancel(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
-    }
     
+    //MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +49,6 @@ class GeoLocationViewController: UIViewController {
         enterUrlTextView.backgroundColor = UIColor.init(red: 0.023, green: 0.569, blue: 0.910, alpha: 1.0)
         self.navigationController?.navigationBar.barTintColor = UIColor.init(red: 0.023, green: 0.569, blue: 0.910, alpha: 1.0)
         self.navigationController?.navigationBar.isTranslucent = false
-        
-        
         
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(mapString) { (placemarks, error) in
@@ -68,6 +70,14 @@ class GeoLocationViewController: UIViewController {
         }
     }
     
+    
+    
+    //MARK: Actions
+    
+    @IBAction func cancel(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func submitStudentLocation(_ sender: UIButton) {
         
         //get unique key from the Udacity post session
@@ -79,22 +89,42 @@ class GeoLocationViewController: UIViewController {
             if let udacityStudentData = udacityStudentData {
                 self.studentFirstname = udacityStudentData.firstName
                 self.studentLastname = udacityStudentData.lastName
-
-                ParseClient.sharedInstance().postStudentLocation(uniqueKey: self.studentUniqueKey, firstName: self.studentFirstname, lastName: self.studentLastname, mapString: self.mapString, mediaURL: self.enterUrlTextView.text, latitude: self.latitude, longitude: self.longitude) { (objectID, error) in
-                    
-                    if let _ = objectID {
-                        performUIUpdatesOnMain {
-                            let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
-                            self.present(controller, animated: true, completion: nil)
+                self.studentUniqueKey = UdacityClient.sharedInstance().uniqueKey
+                
+                //IF updateLocation == false
+                if !self.updateLocation {
+                    ParseClient.sharedInstance().postStudentLocation(uniqueKey: self.studentUniqueKey, firstName: self.studentFirstname, lastName: self.studentLastname, mapString: self.mapString, mediaURL: self.enterUrlTextView.text, latitude: self.latitude, longitude: self.longitude) { (objectID, error) in
+                        
+                        if let _ = objectID {
+                            performUIUpdatesOnMain {
+                                let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
+                                self.present(controller, animated: true, completion: nil)
+                            }
+                        }
+                    }
+                } else {
+                    //Else, call update method
+                    ParseClient.sharedInstance().updateStudentLocation(uniqueKey: self.studentUniqueKey, firstName: self.studentFirstname, lastName: self.studentLastname, mapString: self.mapString, mediaURL: self.enterUrlTextView.text, latitude: self.latitude, longitude: self.longitude) { (result, error) in
+                        
+                        if let _ = result {
+                            performUIUpdatesOnMain {
+                                let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
+                                self.present(controller, animated: true, completion: nil)
+                            }
                         }
                     }
                 }
+                
+                
+                
             }
         }
     }
     
 }
 
+
+//MARK: TextViewDelegate Methods
 
 extension GeoLocationViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -113,7 +143,7 @@ extension GeoLocationViewController: UITextViewDelegate {
             submitButton.isUserInteractionEnabled = false
         } else {
             emptyMediaURLErrorLabel.isHidden = true
-            LoginViewController.sharedInstance().customizeButtonsLook(button: submitButton)
+            CustomizeButton.customizeButtonsLook(button: submitButton)
             submitButton.isUserInteractionEnabled = true
         }
     }

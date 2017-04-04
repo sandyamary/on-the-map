@@ -17,7 +17,8 @@ class ListViewController: UIViewController {
     @IBOutlet weak var locationsTableView: UITableView!
     
     // MARK: Properties
-    var studentLocations: [StudentLocation] = [StudentLocation]()
+    
+    var studentLocations = [StudentLocation]()
     
     // MARK: Life Cycle
     

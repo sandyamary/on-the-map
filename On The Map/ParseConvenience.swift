@@ -66,12 +66,12 @@ extension ParseClient {
     }
     
     
-    func updateStudentLocation(_ studentLocation: StudentLocation, uniqueKey: String, firstName: String, lastName: String, mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForStudentLocation: @escaping (_ result: String?, _ error: NSError?) -> Void) {
+    func updateStudentLocation(uniqueKey: String, firstName: String, lastName: String, mapString: String, mediaURL: String, latitude: Double, longitude: Double, completionHandlerForStudentLocation: @escaping (_ result: String?, _ error: NSError?) -> Void) {
         
         var mutableMethod: String = Methods.UpdateStudentLocation
         mutableMethod = substituteKeyInMethod(mutableMethod, key: ParseClient.URLKeys.objectID, value: String(ParseClient.sharedInstance().objectID!))!
         
-        let jsonBody = "{\"\(ParseClient.JSONBodyKeys.UniqueKey)\": \"\(uniqueKey)\",\"\(ParseClient.JSONBodyKeys.FirstName)\": \"\(firstName)\",\"\(ParseClient.JSONBodyKeys.LastName)\": \(lastName), \"\(ParseClient.JSONBodyKeys.MapString)\": \"\(mapString)\", \"\(ParseClient.JSONBodyKeys.MediaURL)\": \"\(mediaURL)\", \"\(ParseClient.JSONBodyKeys.Longitude)\": \"\(longitude)\", \"\(ParseClient.JSONBodyKeys.Latitude)\": \"\(latitude)\"}"
+        let jsonBody = "{\"\(ParseClient.JSONBodyKeys.UniqueKey)\": \"\(uniqueKey)\",\"\(ParseClient.JSONBodyKeys.FirstName)\": \"\(firstName)\",\"\(ParseClient.JSONBodyKeys.LastName)\": \"\(lastName)\", \"\(ParseClient.JSONBodyKeys.MapString)\": \"\(mapString)\", \"\(ParseClient.JSONBodyKeys.MediaURL)\": \"\(mediaURL)\", \"\(ParseClient.JSONBodyKeys.Longitude)\": \(longitude), \"\(ParseClient.JSONBodyKeys.Latitude)\": \(latitude)}"
         
         /* 2. Make the request */
         let _ = taskForPUTMethod(mutableMethod, parameters: [String:AnyObject](), jsonBody: jsonBody) { (results, error) in

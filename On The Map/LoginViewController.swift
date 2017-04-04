@@ -12,32 +12,27 @@ import UIKit
 
 class LoginViewController: UIViewController {
     
+    // MARK: Outlets
     
     @IBOutlet var usernameField: UITextField!
-
+    
     @IBOutlet var passwordField: UITextField!
     
     @IBOutlet var debugTextLabel: UILabel!
     
     @IBOutlet var loginButton: UIButton!
     
+    // MARK: Properties
     
     var session: URLSession!
+    
     
     // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        customizeButtonsLook(button: loginButton)
+        CustomizeButton.customizeButtonsLook(button: loginButton)
         configureBackground()
-    }
-    
-    func customizeButtonsLook(button: UIButton) {
-        button.backgroundColor = .clear
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.white.cgColor
-        button.backgroundColor = UIColor.init(red: 0.023, green: 0.569, blue: 0.910, alpha: 1.0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,11 +40,12 @@ class LoginViewController: UIViewController {
         debugTextLabel.text = ""
     }
     
+    
     // MARK: Actions
     
     @IBAction func loginPressed(_ sender: AnyObject) {
         self.authenticateWithViewController(self) { (success, errorString) in
- 
+            
             performUIUpdatesOnMain {
                 if success {
                     self.completeLogin()
@@ -59,6 +55,16 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func newUserSignUp(_ sender: Any) {
+        let app = UIApplication.shared
+        let toOpen = "https://auth.udacity.com/sign-up?next=https%3A%2F%2Fclassroom.udacity.com%2Fauthenticated"
+        if let url = URL(string: toOpen) {
+            app.open(url, options: [:], completionHandler: nil)
+        }
+    }
+    
+    // MARK: Authenticate
     
     func authenticateWithViewController(_ hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
@@ -74,7 +80,7 @@ class LoginViewController: UIViewController {
             }
         }
     }
-
+    
     
     // MARK: Login
     
@@ -84,19 +90,16 @@ class LoginViewController: UIViewController {
         present(controller, animated: true, completion: nil)
     }
     
+    // MARK: Login Error
+    
     func displayError(_ errorString: String?) {
         if let errorString = errorString {
             debugTextLabel.text = errorString
         }
     }
-
-    @IBAction func newUserSignUp(_ sender: Any) {
-        let app = UIApplication.shared
-        let toOpen = "https://auth.udacity.com/sign-up?next=https%3A%2F%2Fclassroom.udacity.com%2Fauthenticated"
-        if let url = URL(string: toOpen) {
-            app.open(url, options: [:], completionHandler: nil)
-        }
-    }
+    
+    
+    // MARK: Configure UI Look
     
     func configureBackground() {
         let backgroundGradient = CAGradientLayer()
@@ -107,16 +110,4 @@ class LoginViewController: UIViewController {
         backgroundGradient.frame = view.frame
         view.layer.insertSublayer(backgroundGradient, at: 0)
     }
-    
-    // MARK: Shared Instance
-    
-    class func sharedInstance() -> LoginViewController {
-        struct Singleton {
-            static var sharedInstance = LoginViewController()
-        }
-        return Singleton.sharedInstance
-    }
-    
-
-
 }

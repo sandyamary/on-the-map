@@ -25,6 +25,7 @@
 		8A3D97751E8F1218003529B1 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D97741E8F1218003529B1 /* ListViewController.swift */; };
 		8A3D97771E8F6FF7003529B1 /* AddStudentLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D97761E8F6FF7003529B1 /* AddStudentLocationViewController.swift */; };
 		8A3D977B1E8F8C38003529B1 /* GeoLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D977A1E8F8C38003529B1 /* GeoLocationViewController.swift */; };
+		8A3D977D1E937176003529B1 /* CustomizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D977C1E937176003529B1 /* CustomizeButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		8A3D97741E8F1218003529B1 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		8A3D97761E8F6FF7003529B1 /* AddStudentLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStudentLocationViewController.swift; sourceTree = "<group>"; };
 		8A3D977A1E8F8C38003529B1 /* GeoLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoLocationViewController.swift; sourceTree = "<group>"; };
+		8A3D977C1E937176003529B1 /* CustomizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomizeButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +148,7 @@
 			children = (
 				8A2572D51E8ACF220045E866 /* Main.storyboard */,
 				8A2572DA1E8ACF220045E866 /* LaunchScreen.storyboard */,
+				8A3D977C1E937176003529B1 /* CustomizeButton.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				8A2572D21E8ACF220045E866 /* AppDelegate.swift in Sources */,
 				8A3D97751E8F1218003529B1 /* ListViewController.swift in Sources */,
 				8A2572FF1E8DC1FB0045E866 /* LoginViewController.swift in Sources */,
+				8A3D977D1E937176003529B1 /* CustomizeButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

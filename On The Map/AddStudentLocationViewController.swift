@@ -11,11 +11,19 @@ import UIKit
 
 class AddStudentLocationViewController: UIViewController {
     
+    // MARK: Properties
+    
+    var updateLocation: Bool!
+    
+    // MARK: Outlets
     
     @IBOutlet var enterLocationTextView: UITextView!
+    
     @IBOutlet var findOnMapButton: UIButton!
     
     @IBOutlet var emptyLocationErrorLabel: UILabel!
+    
+    // MARK: Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,10 +38,13 @@ class AddStudentLocationViewController: UIViewController {
         
     }
     
+    // MARK: Actions
+    
     @IBAction func findOnMap(_ sender: UIButton) {
         let storyboard = UIStoryboard (name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "GeoLocationViewController") as! GeoLocationViewController
         controller.mapString = enterLocationTextView.text
+        controller.updateLocation = self.updateLocation
         present(controller, animated: true, completion: nil)
     }
     
@@ -45,6 +56,7 @@ class AddStudentLocationViewController: UIViewController {
 }
 
 
+// MARK: TextView Delegate methods
 
 extension AddStudentLocationViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -63,7 +75,7 @@ extension AddStudentLocationViewController: UITextViewDelegate {
             findOnMapButton.isUserInteractionEnabled = false
         } else {
             emptyLocationErrorLabel.isHidden = true
-            LoginViewController.sharedInstance().customizeButtonsLook(button: findOnMapButton)
+            CustomizeButton.customizeButtonsLook(button: findOnMapButton)
             findOnMapButton.isUserInteractionEnabled = true
         }
     }

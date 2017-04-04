@@ -18,6 +18,7 @@ struct StudentLocation {
     let longitude: Double
     let objectID: String
     let mediaURL: String?
+    let studentUniqueKey: String
 
     
     // MARK: Initializers
@@ -26,6 +27,7 @@ struct StudentLocation {
     init(dictionary: [String:AnyObject]) {
         firstName = dictionary[ParseClient.JSONResponseKeys.FirstName] as! String
         lastName = dictionary[ParseClient.JSONResponseKeys.LastName] as! String
+        studentUniqueKey = dictionary[ParseClient.JSONResponseKeys.UniqueKey] as! String
         objectID = dictionary[ParseClient.JSONResponseKeys.ObjectID] as! String
         latitude = dictionary[ParseClient.JSONResponseKeys.Latitude] as! Double
         longitude = dictionary[ParseClient.JSONResponseKeys.Longitude] as! Double
