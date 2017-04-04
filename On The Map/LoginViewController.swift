@@ -31,6 +31,8 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        usernameField.delegate = self
+        passwordField.delegate = self
         CustomizeButton.customizeButtonsLook(button: loginButton)
         configureBackground()
     }
@@ -44,7 +46,7 @@ class LoginViewController: UIViewController {
     // MARK: Actions
     
     @IBAction func loginPressed(_ sender: AnyObject) {
-        self.authenticateWithViewController(self) { (success, errorString) in
+        self.authenticateWithViewController(usernameField.text!, passwordField.text!, self) { (success, errorString) in
             
             performUIUpdatesOnMain {
                 if success {
@@ -66,9 +68,9 @@ class LoginViewController: UIViewController {
     
     // MARK: Authenticate
     
-    func authenticateWithViewController(_ hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
+    func authenticateWithViewController(_ userName: String, _ passWord: String, _ hostViewController: UIViewController, completionHandlerForAuth: @escaping (_ success: Bool, _ errorString: String?) -> Void) {
         
-        UdacityClient.sharedInstance().postSession(username: "sandyamary.u@gmail.com", password: "soccerage") { (success, sessionID, key, errorString) in
+        UdacityClient.sharedInstance().postSession(username: userName, password: passWord) { (success, sessionID, key, errorString) in
             if success {
                 if let sessionId = sessionID {
                     UdacityClient.sharedInstance().sessionID = sessionId
@@ -109,5 +111,12 @@ class LoginViewController: UIViewController {
         backgroundGradient.locations = [0.0, 1.0]
         backgroundGradient.frame = view.frame
         view.layer.insertSublayer(backgroundGradient, at: 0)
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

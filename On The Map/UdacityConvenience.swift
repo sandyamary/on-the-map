@@ -54,8 +54,7 @@ extension UdacityClient {
                 completionHandlerForDeleteSession(false, "Cannot delete Session ID.")
             } else {
                 if let results = results?[UdacityClient.JSONResponseKeys.Session] as? [String:AnyObject] {
-                    let sessionID = results[UdacityClient.JSONResponseKeys.Id] as? String
-                    print("Deleted session id \(sessionID)")
+                    let _ = results[UdacityClient.JSONResponseKeys.Id] as? String
                     completionHandlerForDeleteSession(true, nil)
                 } else {
                     print("Could not find \(UdacityClient.JSONResponseKeys.Session) in \(results)")
