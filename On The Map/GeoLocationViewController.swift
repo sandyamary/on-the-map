@@ -91,7 +91,7 @@ class GeoLocationViewController: UIViewController {
                 self.studentLastname = udacityStudentData.lastName
                 self.studentUniqueKey = UdacityClient.sharedInstance().uniqueKey
                 
-                //IF updateLocation == false
+                //IF updateLocation == false, call post student method
                 if !self.updateLocation {
                     ParseClient.sharedInstance().postStudentLocation(uniqueKey: self.studentUniqueKey, firstName: self.studentFirstname, lastName: self.studentLastname, mapString: self.mapString, mediaURL: self.enterUrlTextView.text, latitude: self.latitude, longitude: self.longitude) { (objectID, error) in
                         

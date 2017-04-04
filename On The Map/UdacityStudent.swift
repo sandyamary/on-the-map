@@ -16,7 +16,7 @@ struct UdacityStudent {
     
     // MARK: Initializers
     
-    // construct a TMDBMovie from a dictionary
+    // construct a UdacityStudent from a dictionary
     init(dictionary: [String:AnyObject]) {
         firstName = dictionary[UdacityClient.JSONResponseKeys.FirstName] as! String
         lastName = dictionary[UdacityClient.JSONResponseKeys.LastName] as! String

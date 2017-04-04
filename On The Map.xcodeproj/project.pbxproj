@@ -22,10 +22,10 @@
 		8A2572FD1E8DB9A80045E866 /* UdacityStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2572FC1E8DB9A80045E866 /* UdacityStudent.swift */; };
 		8A2572FF1E8DC1FB0045E866 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2572FE1E8DC1FB0045E866 /* LoginViewController.swift */; };
 		8A2573011E8DC3A90045E866 /* GCDBlackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2573001E8DC3A90045E866 /* GCDBlackBox.swift */; };
-		8A3D97751E8F1218003529B1 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D97741E8F1218003529B1 /* ListViewController.swift */; };
 		8A3D97771E8F6FF7003529B1 /* AddStudentLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D97761E8F6FF7003529B1 /* AddStudentLocationViewController.swift */; };
 		8A3D977B1E8F8C38003529B1 /* GeoLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D977A1E8F8C38003529B1 /* GeoLocationViewController.swift */; };
 		8A3D977D1E937176003529B1 /* CustomizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D977C1E937176003529B1 /* CustomizeButton.swift */; };
+		8A3D977F1E94252F003529B1 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D977E1E94252F003529B1 /* TableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,10 +46,10 @@
 		8A2572FC1E8DB9A80045E866 /* UdacityStudent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudent.swift; sourceTree = "<group>"; };
 		8A2572FE1E8DC1FB0045E866 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		8A2573001E8DC3A90045E866 /* GCDBlackBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCDBlackBox.swift; sourceTree = "<group>"; };
-		8A3D97741E8F1218003529B1 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		8A3D97761E8F6FF7003529B1 /* AddStudentLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddStudentLocationViewController.swift; sourceTree = "<group>"; };
 		8A3D977A1E8F8C38003529B1 /* GeoLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeoLocationViewController.swift; sourceTree = "<group>"; };
 		8A3D977C1E937176003529B1 /* CustomizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomizeButton.swift; sourceTree = "<group>"; };
+		8A3D977E1E94252F003529B1 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,9 +136,9 @@
 			children = (
 				8A2572FE1E8DC1FB0045E866 /* LoginViewController.swift */,
 				8A2572D31E8ACF220045E866 /* MapViewController.swift */,
-				8A3D97741E8F1218003529B1 /* ListViewController.swift */,
 				8A3D97761E8F6FF7003529B1 /* AddStudentLocationViewController.swift */,
 				8A3D977A1E8F8C38003529B1 /* GeoLocationViewController.swift */,
+				8A3D977E1E94252F003529B1 /* TableViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -237,6 +237,7 @@
 			files = (
 				8A2572F71E8D8E040045E866 /* UdacityClient.swift in Sources */,
 				8A2572F91E8D8E430045E866 /* UdacityConstants.swift in Sources */,
+				8A3D977F1E94252F003529B1 /* TableViewController.swift in Sources */,
 				8A2572FB1E8D8E860045E866 /* UdacityConvenience.swift in Sources */,
 				8A2572F31E8CE0440045E866 /* StudentLocation.swift in Sources */,
 				8A2573011E8DC3A90045E866 /* GCDBlackBox.swift in Sources */,
@@ -248,7 +249,6 @@
 				8A3D97771E8F6FF7003529B1 /* AddStudentLocationViewController.swift in Sources */,
 				8A2572EF1E8CD1FA0045E866 /* ParseConstants.swift in Sources */,
 				8A2572D21E8ACF220045E866 /* AppDelegate.swift in Sources */,
-				8A3D97751E8F1218003529B1 /* ListViewController.swift in Sources */,
 				8A2572FF1E8DC1FB0045E866 /* LoginViewController.swift in Sources */,
 				8A3D977D1E937176003529B1 /* CustomizeButton.swift in Sources */,
 			);

@@ -18,7 +18,7 @@ class MapViewController: UIViewController {
     
     // MARK: Properties
     
-    var studentLocations: [StudentLocation]!
+    var studentLocations = [StudentLocation]()
     var loggedUserObjectID: String!
     
     
@@ -37,17 +37,19 @@ class MapViewController: UIViewController {
         super.viewWillAppear(animated)
         
         ParseClient.sharedInstance().getStudentLocations { (studentLocations, error) in
-            if let locations = studentLocations {
+            if let locations = studentLocations  {
                 self.studentLocations = locations
                 var annotations = [MKPointAnnotation]()
                 for eachLocation in self.studentLocations {
+                    
+                    if let lat = eachLocation.latitude, let lon = eachLocation.longitude {
                     
                     if UdacityClient.sharedInstance().uniqueKey == eachLocation.studentUniqueKey {
                         ParseClient.sharedInstance().objectID = eachLocation.objectID
                     }
                     
-                    let lat = CLLocationDegrees(eachLocation.latitude)
-                    let long = CLLocationDegrees(eachLocation.longitude)
+                    let lat = CLLocationDegrees(lat)
+                    let long = CLLocationDegrees(lon)
                     
                     let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
                     
@@ -61,6 +63,7 @@ class MapViewController: UIViewController {
                     annotation.subtitle = mediaURL
                     
                     annotations.append(annotation)
+                }
                 }
                 
                 performUIUpdatesOnMain {
@@ -166,8 +169,9 @@ extension MapViewController: MKMapViewDelegate {
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.shared
             if let toOpen = view.annotation?.subtitle!, let url = URL(string: toOpen) {
-                print(url)
                 app.open(url, options: [:], completionHandler: nil)
+            } else {
+                print("not a link")
             }
         }
     }
