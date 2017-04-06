@@ -18,7 +18,7 @@ class TableViewController: UITableViewController {
     
     // MARK: Properties
     
-    var studentLocations = [StudentLocation]()
+    let studentInformationInstance = StudentInformation.sharedInstance()
     
     // MARK: Life Cycle
     
@@ -26,19 +26,14 @@ class TableViewController: UITableViewController {
         super.viewDidLoad()
         self.locationsTableView.delegate = self
         self.locationsTableView.dataSource = self
-        ParseClient.sharedInstance().getStudentLocations { (studentLocations, error) in
-            if let locations = studentLocations {
-                self.studentLocations = locations
-                performUIUpdatesOnMain {
-                    self.locationsTableView.reloadData()
-                }
-            } else {
-                print(error!)
-            }
-            
-        }
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.locationsTableView.reloadData()
+    }
+    
 }
 
 // MARK: - TableViewController: UITableViewDelegate, UITableViewDataSource
@@ -49,7 +44,7 @@ extension TableViewController {
         
         /* Get cell type */
         let cellReuseIdentifier = "LocationTableViewCell"
-        let studentLocation = studentLocations[(indexPath as NSIndexPath).row]
+        let studentLocation = studentInformationInstance.studentLocations[(indexPath as NSIndexPath).row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)!
         
         /* Set cell defaults */
@@ -58,11 +53,11 @@ extension TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return studentLocations.count
+        return studentInformationInstance.studentLocations.count
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let urlString = studentLocations[(indexPath as NSIndexPath).row].mediaURL
+        let urlString = studentInformationInstance.studentLocations[(indexPath as NSIndexPath).row].mediaURL
         let app = UIApplication.shared
         if let toOpen = urlString, let url = URL(string: toOpen) {
             app.open(url, options: [:], completionHandler: nil)

@@ -36,13 +36,7 @@ class LoginViewController: UIViewController {
         CustomizeButton.customizeButtonsLook(button: loginButton)
         configureBackground()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        debugTextLabel.text = ""
-    }
-    
-    
+        
     // MARK: Actions
     
     @IBAction func loginPressed(_ sender: AnyObject) {
@@ -87,7 +81,6 @@ class LoginViewController: UIViewController {
     // MARK: Login
     
     private func completeLogin() {
-        debugTextLabel.text = ""
         let controller = storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
         present(controller, animated: true, completion: nil)
     }
@@ -96,7 +89,9 @@ class LoginViewController: UIViewController {
     
     func displayError(_ errorString: String?) {
         if let errorString = errorString {
-            debugTextLabel.text = errorString
+            Common.showUserAlert(messageTitle: "Login Failed", message: "\(errorString)", actionTitle: nil, cancelActionTitle: "Try Again", hostViewController: self) { return }
+        } else {
+            Common.showUserAlert(messageTitle: "Login Failed", message: "Unknown error", actionTitle: nil, cancelActionTitle: "Try Again", hostViewController: self) { return }
         }
     }
     

@@ -16,6 +16,7 @@ extension ParseClient {
         // MARK: API Key
         static let ApplicationID = "QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr"
         static let ApiKey = "QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY"
+        static let limitCount = 100
         
         // MARK: URLs
         static let ApiScheme = "https"

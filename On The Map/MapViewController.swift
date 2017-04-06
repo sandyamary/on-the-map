@@ -15,11 +15,9 @@ class MapViewController: UIViewController {
     
     @IBOutlet var mapView: MKMapView!
     
-    
     // MARK: Properties
-    
-    var studentLocations = [StudentLocation]()
     var loggedUserObjectID: String!
+    let studentInformationInstance = StudentInformation.sharedInstance()
     
     
     // MARK: Life Cycle
@@ -38,9 +36,9 @@ class MapViewController: UIViewController {
         
         ParseClient.sharedInstance().getStudentLocations { (studentLocations, error) in
             if let locations = studentLocations  {
-                self.studentLocations = locations
                 var annotations = [MKPointAnnotation]()
-                for eachLocation in self.studentLocations {
+                for eachLocation in locations {
+                    self.studentInformationInstance.studentLocations.append(eachLocation)
                     
                     if let lat = eachLocation.latitude, let lon = eachLocation.longitude {
                     
@@ -61,7 +59,6 @@ class MapViewController: UIViewController {
                     annotation.coordinate = coordinate
                     annotation.title = "\(first) \(last)"
                     annotation.subtitle = mediaURL
-                    
                     annotations.append(annotation)
                 }
                 }
@@ -111,7 +108,7 @@ class MapViewController: UIViewController {
     }
     
     func doesLocationExist() -> Bool {
-        for eachStudentLocation in studentLocations {
+        for eachStudentLocation in self.studentInformationInstance.studentLocations {
             if UdacityClient.sharedInstance().uniqueKey == eachStudentLocation.studentUniqueKey {
                 return true
             }

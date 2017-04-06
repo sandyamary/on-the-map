@@ -26,14 +26,13 @@ extension UdacityClient {
 
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
-                print(error)
-                completionHandlerForSession(false, nil, nil, "Login Failed (Request Token).")
+                completionHandlerForSession(false, nil, nil, error)
             } else {
                 if let session = results?[UdacityClient.JSONResponseKeys.Session] as? [String: AnyObject], let sessionid = session[UdacityClient.JSONResponseKeys.Id] as? String, let account = results?[UdacityClient.JSONResponseKeys.Account] as? [String: AnyObject], let uniquekey = account[UdacityClient.JSONResponseKeys.Key] as? String {
                     completionHandlerForSession(true, sessionid, uniquekey, nil)
                 } else {
                     print("Could not find \(UdacityClient.JSONResponseKeys.Session) in \(results)")
-                    completionHandlerForSession(false, nil, nil, "Login Failed (due to Request Token).")
+                    completionHandlerForSession(false, nil, nil, "Service Error")
                 }
             }
         }
@@ -64,7 +63,7 @@ extension UdacityClient {
         }
     }
     
-    func getUserData(completionHandlerForUserData: @escaping (_ result: UdacityStudent?, _ error: NSError?) -> Void) {
+    func getUserData(completionHandlerForUserData: @escaping (_ result: UdacityStudent?, _ error: String?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
         //none

@@ -32,13 +32,6 @@
                                     <action selector="loginPressed:" destination="zbo-Yz-yGY" eventType="touchUpInside" id="yWT-fE-zn3"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ucW-Rh-1gD">
-                                <rect key="frame" x="16" y="604" width="359" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xk7-j1-crT">
                                 <rect key="frame" x="37.5" y="293.5" width="300" height="30"/>
                                 <constraints>
@@ -88,7 +81,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="vLh-2I-QXh"/>
                     <connections>
-                        <outlet property="debugTextLabel" destination="ucW-Rh-1gD" id="Cbc-Mm-3qq"/>
                         <outlet property="loginButton" destination="nhF-ts-Zz3" id="nHE-DM-aBC"/>
                         <outlet property="passwordField" destination="NJ8-MT-EPz" id="H4f-4v-sxm"/>
                         <outlet property="usernameField" destination="Xk7-j1-crT" id="4Jt-Ls-8cF"/>
