@@ -84,10 +84,13 @@ class GeoLocationViewController: UIViewController {
                     }
                 }
             } else {
-                Common.showUserAlert(messageTitle: "Invalid Address", message: "Address entered could not be located on map", actionTitle: "Try Again", cancelActionTitle: "Cancel", hostViewController: self) {
-                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController") as! AddStudentLocationViewController
-                    controller.updateLocation = true
-                    self.present(controller, animated: true, completion: nil)
+                performUIUpdatesOnMain {
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
+                    Common.showUserAlert(messageTitle: "Invalid Address", message: "Address entered could not be located on map", actionTitle: "Try Again", cancelActionTitle: nil, hostViewController: self) {
+                        let controller = self.storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController") as! AddStudentLocationViewController
+                        self.present(controller, animated: true, completion: nil)
+                    }
                 }
             }
         }
@@ -98,7 +101,6 @@ class GeoLocationViewController: UIViewController {
     //MARK: Actions
     
     @IBAction func cancel(_ sender: UIButton) {
-        //dismiss(animated: true, completion: nil)
         let presentingViewController = self.presentingViewController
         self.dismiss(animated: false, completion: {
             presentingViewController!.dismiss(animated: true, completion: {})
@@ -110,6 +112,8 @@ class GeoLocationViewController: UIViewController {
         
         //get unique key from the Udacity post session
         studentUniqueKey = UdacityClient.sharedInstance().uniqueKey
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
         
         //get udacity user fname and lname using the unique key
         UdacityClient.sharedInstance().getUserData { (udacityStudentData, error) in
@@ -125,11 +129,22 @@ class GeoLocationViewController: UIViewController {
                         
                         if let _ = objectID {
                             performUIUpdatesOnMain {
-                                let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
-                                self.present(controller, animated: true, completion: nil)
+                                self.activityIndicator.stopAnimating()
+                                self.activityIndicator.isHidden = true
+                                let presentingViewController = self.presentingViewController
+                                self.dismiss(animated: false, completion: {
+                                    presentingViewController!.dismiss(animated: true, completion: {
+                                        let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
+                                        self.present(controller, animated: true, completion: nil)
+                                    })
+                                })
                             }
                         } else {
-                            Common.showUserAlert(messageTitle: "Failed", message: "Student Location could not be posted", actionTitle: nil, cancelActionTitle: "Try Again after few minutes", hostViewController: self) { return }
+                            performUIUpdatesOnMain {
+                                self.activityIndicator.stopAnimating()
+                                self.activityIndicator.isHidden = true
+                                Common.showUserAlert(messageTitle: "Failed", message: "Student Location could not be posted", actionTitle: nil, cancelActionTitle: "Try Again after few minutes", hostViewController: self) { return }
+                            }
                         }
                     }
                 } else {
@@ -137,18 +152,33 @@ class GeoLocationViewController: UIViewController {
                     ParseClient.sharedInstance().updateStudentLocation(uniqueKey: self.studentUniqueKey, firstName: self.studentFirstname, lastName: self.studentLastname, mapString: self.mapString, mediaURL: self.enterUrlTextView.text, latitude: self.latitude, longitude: self.longitude) { (result, error) in
                         
                         if let _ = result {
+                            print("Update Result :\(result)")
                             performUIUpdatesOnMain {
-                                let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
-                                self.present(controller, animated: true, completion: nil)
+                                self.activityIndicator.stopAnimating()
+                                self.activityIndicator.isHidden = true
+                                let presentingViewController = self.presentingViewController
+                                self.dismiss(animated: false, completion: {
+                                    presentingViewController!.dismiss(animated: true, completion: {
+                                        let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
+                                        self.present(controller, animated: true, completion: nil)
+                                    })
+                                })
                             }
                         } else {
-                            Common.showUserAlert(messageTitle: "Failed", message: "Student Location could not be posted", actionTitle: nil, cancelActionTitle: "Try Again later", hostViewController: self) { return }
+                            performUIUpdatesOnMain {
+                                self.activityIndicator.stopAnimating()
+                                self.activityIndicator.isHidden = true
+                                Common.showUserAlert(messageTitle: "Failed", message: "Student Location could not be posted", actionTitle: nil, cancelActionTitle: "Try Again later", hostViewController: self) { return }
+                            }
                         }
                     }
                 }
-                
-                
-                
+            } else {
+                performUIUpdatesOnMain {
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.isHidden = true
+                    Common.showUserAlert(messageTitle: "Failed", message: "Student Location could not be posted", actionTitle: nil, cancelActionTitle: "Try Again later", hostViewController: self) { return }
+                }
             }
         }
     }

@@ -44,7 +44,7 @@ class AddStudentLocationViewController: UIViewController {
         let storyboard = UIStoryboard (name: "Main", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "GeoLocationViewController") as! GeoLocationViewController
         controller.mapString = enterLocationTextView.text
-        controller.updateLocation = self.updateLocation
+        controller.updateLocation = updateLocation
         present(controller, animated: true, completion: nil)
     }
     
@@ -52,7 +52,7 @@ class AddStudentLocationViewController: UIViewController {
     @IBAction func cancel(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
-
+    
 }
 
 
@@ -87,5 +87,5 @@ extension AddStudentLocationViewController: UITextViewDelegate {
         }
         return true
     }
-
+    
 }

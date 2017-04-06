@@ -80,7 +80,6 @@ class MapViewController: UIViewController {
     func addLocation() {
         
         if doesLocationExist() {
-            
             Common.showUserAlert(messageTitle: "Alert", message: "You have already posted a student location. Would you like to overwrite it?", actionTitle: "Overwrite", cancelActionTitle: "Cancel", hostViewController: self ) {
                 let controller = self.storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController") as! AddStudentLocationViewController
                 controller.updateLocation = true
@@ -155,8 +154,8 @@ extension MapViewController: MKMapViewDelegate {
             if let annotation = view.annotation, let str = annotation.subtitle, let toOpen = str, let url = URL(string: toOpen) {
                 if app.canOpenURL(url) {
                     app.open(url, options: [:], completionHandler: nil)
-                    }
-                    else {
+                }
+                else {
                     Common.showUserAlert(messageTitle: "Not a Link", message: "Student did not post a url Link", actionTitle: nil, cancelActionTitle: "Ok", hostViewController: self) { return }
                 }
             }
