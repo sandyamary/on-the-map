@@ -24,9 +24,9 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        parent!.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "MarkerIcon")!, style: .plain, target: self, action: #selector(addLocation))
+        parent!.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "MarkerIcon")!, style: .plain, target: self, action: #selector(addLocation))
         
-        parent!.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout))
+        parent!.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout))
         
         mapView.delegate = self
     }
@@ -41,26 +41,26 @@ class MapViewController: UIViewController {
                     self.studentInformationInstance.studentLocations.append(eachLocation)
                     
                     if let lat = eachLocation.latitude, let lon = eachLocation.longitude {
-                    
-                    if UdacityClient.sharedInstance().uniqueKey == eachLocation.studentUniqueKey {
-                        ParseClient.sharedInstance().objectID = eachLocation.objectID
+                        
+                        if UdacityClient.sharedInstance().uniqueKey == eachLocation.studentUniqueKey {
+                            ParseClient.sharedInstance().objectID = eachLocation.objectID
+                        }
+                        
+                        let lat = CLLocationDegrees(lat)
+                        let long = CLLocationDegrees(lon)
+                        
+                        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                        
+                        let first = eachLocation.firstName
+                        let last = eachLocation.lastName
+                        let mediaURL = eachLocation.mediaURL
+                        
+                        let annotation = MKPointAnnotation()
+                        annotation.coordinate = coordinate
+                        annotation.title = "\(first) \(last)"
+                        annotation.subtitle = mediaURL
+                        annotations.append(annotation)
                     }
-                    
-                    let lat = CLLocationDegrees(lat)
-                    let long = CLLocationDegrees(lon)
-                    
-                    let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-                    
-                    let first = eachLocation.firstName
-                    let last = eachLocation.lastName
-                    let mediaURL = eachLocation.mediaURL
-                    
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = coordinate
-                    annotation.title = "\(first) \(last)"
-                    annotation.subtitle = mediaURL
-                    annotations.append(annotation)
-                }
                 }
                 
                 performUIUpdatesOnMain {
@@ -68,7 +68,7 @@ class MapViewController: UIViewController {
                 }
                 
             } else {
-                print(error!)
+                Common.showUserAlert(messageTitle: "Oops!", message: "Did not find any Udacity student locations", actionTitle: nil, cancelActionTitle: "Ok", hostViewController: self) { return }
             }
         }
     }
@@ -81,22 +81,11 @@ class MapViewController: UIViewController {
         
         if doesLocationExist() {
             
-            let alertController = UIAlertController(title: "Alert", message: "You have already posted a student location. Would you like to overwrite it?", preferredStyle: UIAlertControllerStyle.alert)
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.default, handler: nil)
-            
-            let overwriteAction = UIAlertAction(title: "Overwrite", style: UIAlertActionStyle.default)
-            {
-                (result : UIAlertAction) -> Void in
-                //set a flag to update location instead of posting new one
+            Common.showUserAlert(messageTitle: "Alert", message: "You have already posted a student location. Would you like to overwrite it?", actionTitle: "Overwrite", cancelActionTitle: "Cancel", hostViewController: self ) {
                 let controller = self.storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController") as! AddStudentLocationViewController
                 controller.updateLocation = true
                 self.present(controller, animated: true, completion: nil)
-                
             }
-            alertController.addAction(overwriteAction)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true, completion: nil)
             
         } else {
             
@@ -124,14 +113,12 @@ class MapViewController: UIViewController {
         UdacityClient.sharedInstance().deleteSession { (success, errorMessage) in
             if success {
                 performUIUpdatesOnMain {
-                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-                    self.present(controller, animated: true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 }
             } else {
                 print(errorMessage ?? "Session could not be Deleted")
                 performUIUpdatesOnMain {
-                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-                    self.present(controller, animated: true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 }
             }
         }
@@ -165,10 +152,13 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
             let app = UIApplication.shared
-            if let toOpen = view.annotation?.subtitle!, let url = URL(string: toOpen) {
-                app.open(url, options: [:], completionHandler: nil)
-            } else {
-                print("not a link")
+            if let annotation = view.annotation, let str = annotation.subtitle, let toOpen = str, let url = URL(string: toOpen) {
+                if app.canOpenURL(url) {
+                    app.open(url, options: [:], completionHandler: nil)
+                    }
+                    else {
+                    Common.showUserAlert(messageTitle: "Not a Link", message: "Student did not post a url Link", actionTitle: nil, cancelActionTitle: "Ok", hostViewController: self) { return }
+                }
             }
         }
     }

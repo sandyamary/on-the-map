@@ -33,11 +33,26 @@ class GeoLocationViewController: UIViewController {
     
     @IBOutlet var emptyMediaURLErrorLabel: UILabel!
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     //MARK: Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        activityIndicator.isHidden = true
+        activityIndicator.hidesWhenStopped = true;
+        activityIndicator.activityIndicatorViewStyle  = UIActivityIndicatorViewStyle.gray;
+        activityIndicator.center = view.center;
+        
+        
         submitButton.isUserInteractionEnabled = false
         submitButton.backgroundColor = UIColor.lightGray
         emptyMediaURLErrorLabel.isHidden = true
@@ -64,7 +79,15 @@ class GeoLocationViewController: UIViewController {
                     performUIUpdatesOnMain {
                         self.postPinMapView.setRegion(region, animated: true)
                         self.postPinMapView.addAnnotation(annotation)
+                        self.activityIndicator.stopAnimating()
+                        self.activityIndicator.isHidden = true
                     }
+                }
+            } else {
+                Common.showUserAlert(messageTitle: "Invalid Address", message: "Address entered could not be located on map", actionTitle: "Try Again", cancelActionTitle: "Cancel", hostViewController: self) {
+                    let controller = self.storyboard!.instantiateViewController(withIdentifier: "AddStudentLocationViewController") as! AddStudentLocationViewController
+                    controller.updateLocation = true
+                    self.present(controller, animated: true, completion: nil)
                 }
             }
         }
@@ -75,7 +98,12 @@ class GeoLocationViewController: UIViewController {
     //MARK: Actions
     
     @IBAction func cancel(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
+        let presentingViewController = self.presentingViewController
+        self.dismiss(animated: false, completion: {
+            presentingViewController!.dismiss(animated: true, completion: {})
+        }
+        )
     }
     
     @IBAction func submitStudentLocation(_ sender: UIButton) {
@@ -100,6 +128,8 @@ class GeoLocationViewController: UIViewController {
                                 let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
                                 self.present(controller, animated: true, completion: nil)
                             }
+                        } else {
+                            Common.showUserAlert(messageTitle: "Failed", message: "Student Location could not be posted", actionTitle: nil, cancelActionTitle: "Try Again after few minutes", hostViewController: self) { return }
                         }
                     }
                 } else {
@@ -111,6 +141,8 @@ class GeoLocationViewController: UIViewController {
                                 let controller = self.storyboard!.instantiateViewController(withIdentifier: "TabBarNavigationController") as! UINavigationController
                                 self.present(controller, animated: true, completion: nil)
                             }
+                        } else {
+                            Common.showUserAlert(messageTitle: "Failed", message: "Student Location could not be posted", actionTitle: nil, cancelActionTitle: "Try Again later", hostViewController: self) { return }
                         }
                     }
                 }

@@ -32,13 +32,12 @@ class ParseClient : NSObject {
         /* 1. Set the parameters */
         var parametersWithLimit = parameters
         parametersWithLimit[ParseClient.ParameterKeys.Limit] = Constants.limitCount as AnyObject?
+        parametersWithLimit[ParseClient.ParameterKeys.Order] = ParseClient.ParameterValues.UpdatedAt as AnyObject?
         
         /* 2/3. Build the URL, Configure the request */
         let request = NSMutableURLRequest(url: parseURLFromParameters(parametersWithLimit, withPathExtension: method))
         request.addValue(Constants.ApplicationID, forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue(Constants.ApiKey, forHTTPHeaderField: "X-Parse-REST-API-Key")
-        
-        print(request)
         
         /* 4. Make the request */
         let task = session.dataTask(with: request as URLRequest) { (data, response, error) in

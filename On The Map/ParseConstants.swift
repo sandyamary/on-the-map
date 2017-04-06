@@ -41,7 +41,11 @@ extension ParseClient {
     struct ParameterKeys {
         static let Limit = "limit"
         static let Skip = "skip"
-        static let UpdatedAt = "updatedAt"
+        static let Order = "order"
+    }
+    
+    struct ParameterValues {
+        static let UpdatedAt = "-updatedAt"
     }
     
     // MARK: JSON Body Keys (for POST)

@@ -138,7 +138,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wrm-t4-aOM" id="9ID-Z4-ZEB">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -206,6 +206,10 @@
                                 <color key="textColor" red="0.80519908666610718" green="0.074793823063373566" blue="0.12723368406295776" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Fih-XG-8wP">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -229,6 +233,7 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="Fih-XG-8wP" id="J9Q-aL-ez8"/>
                         <outlet property="emptyMediaURLErrorLabel" destination="Mmy-F7-O1P" id="uDx-SI-xkf"/>
                         <outlet property="enterUrlTextView" destination="1l3-FO-NTH" id="Xqk-zx-YeV"/>
                         <outlet property="postPinMapView" destination="5NM-Xl-e6i" id="6bP-C9-yW6"/>

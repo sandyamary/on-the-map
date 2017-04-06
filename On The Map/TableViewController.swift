@@ -60,11 +60,13 @@ extension TableViewController {
         let urlString = studentInformationInstance.studentLocations[(indexPath as NSIndexPath).row].mediaURL
         let app = UIApplication.shared
         if let toOpen = urlString, let url = URL(string: toOpen) {
-            app.open(url, options: [:], completionHandler: nil)
-        } else {
-            print("not a link")
+            if app.canOpenURL(url) {
+                app.open(url, options: [:], completionHandler: nil)
+            }
+            else {
+                Common.showUserAlert(messageTitle: "Not a Link", message: "Student did not post a url Link", actionTitle: nil, cancelActionTitle: "Ok", hostViewController: self) { return }
+            }
         }
-        
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
